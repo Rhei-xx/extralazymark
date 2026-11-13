@@ -48,7 +48,9 @@ func usageHeader() string {
 		"  task start <id> <YYYY-MM-DD|none> [--json] [--dir <dir>]\n" +
 		"  paste [--no-newline] [<note.md>]\n" +
 		"  editor-plugins install|uninstall [micro|vim|nano]\n" +
-		"  mcp [--dir <dir>]\n\n" +
+		"  mcp [--dir <dir>]\n" +
+		"  sync setup|now|status|on|off [--dir <dir>]\n" +
+		"  uninstall [--trash] [--yes] [--dir <dir>]\n\n" +
 		i18n.T("Opciones:\n", "Options:\n")
 }
 
@@ -120,6 +122,18 @@ func main() {
 			}
 			os.Exit(cli.RunEditorPlugins(os.Args[idx+2:], editors.Env{Home: home, Getenv: os.Getenv}, os.Stdout, os.Stderr))
 		}
+		if arg == "sync" { // sincronización entre máquinas (propia de este fork)
+			os.Exit(cli.RunSync(os.Args[idx+2:], extractDirArg(os.Args[1:]), os.Stdout, os.Stderr))
+		}
+		if arg == "uninstall" { // desinstalación limpia (propia de este fork)
+			home, err := os.UserHomeDir()
+			if err != nil {
+				fmt.Fprintf(os.Stderr, "Error: %v\n", err)
+				os.Exit(1)
+			}
+			env := editors.Env{Home: home, Getenv: os.Getenv}
+			os.Exit(cli.RunUninstall(os.Args[idx+2:], extractDirArg(os.Args[1:]), env, os.Stdin, os.Stdout, os.Stderr))
+		}
 		if arg == "mcp" {
 			for _, a := range os.Args[idx+2:] {
 				if a == "-h" || a == "--help" {
@@ -186,6 +200,9 @@ func main() {
 		cfg.OverrideTheme(themeName) // solo esta ejecución: no se guarda en config.json
 	}
 
+	// Con la sincronización automática activada, se sincroniza antes de abrir la interfaz y después de cerrarla.
+	cli.SyncOnOpen(cfg.NotesDir, os.Stdin, os.Stdout)
+
 	appModel, err := app.New(cfg)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, i18n.E("Error al inicializar lazymark: %v\n", "Could not initialize lazymark: %v\n"), err)
@@ -198,4 +215,5 @@ func main() {
 		fmt.Fprintf(os.Stderr, i18n.E("Error durante la ejecución: %v\n", "Error while running: %v\n"), err)
 		os.Exit(1)
 	}
+	cli.SyncOnClose(cfg.NotesDir, os.Stdout)
 }

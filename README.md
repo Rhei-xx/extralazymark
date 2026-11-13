@@ -18,6 +18,8 @@ Plain markdown files. Keyboard and mouse. Inline images.
 
 </div>
 
+> **This is a personal fork.** It adds syncing between machines through git and a clean uninstall, and it sends nothing anywhere on its own. See [docs/fork.md](docs/fork.md).
+
 ## Why lazymark
 
 - **Your notes stay yours.** They are plain markdown files in one folder. Edit them with any editor; lazymark only rewrites the line you change and never overwrites a note that changed outside it.
