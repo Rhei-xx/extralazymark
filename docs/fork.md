@@ -1,6 +1,6 @@
 # What this fork adds
 
-This is a personal fork of [lazymark](https://github.com/MathiasDrizzy/lazymark). Upstream is kept as it is wherever possible, so its updates can still be merged in. The additions live in new files, with a few lines in `cmd/lazymark/main.go` to call them.
+This is a personal fork of [lazymark](https://github.com/MathiasDrizzy/lazymark). Upstream is kept as it is wherever possible, so its updates can still be merged in. The additions live in new files, with a few lines in `cmd/lazymark/main.go` to call them and short sections in `README.md` and `docs/cli.md`.
 
 | Addition | Where |
 |---|---|

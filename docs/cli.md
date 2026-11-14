@@ -27,6 +27,18 @@ lazymark kanban retag --from <prefix> --to <prefix> [--dry-run] [--json]
 
 `note get <path>` and `task toggle --path <note> --line <n>` still work.
 
+This fork adds two more, described in [fork.md](fork.md):
+
+```
+lazymark sync setup --remote <url> [--ssh-key <file>]
+lazymark sync now
+lazymark sync status
+lazymark sync on|off
+lazymark uninstall [--trash] [--yes]
+```
+
+They take `--dir` but not `--json`. `sync now` and `sync setup` exit with 4 when the sync stopped on a conflict.
+
 ## Search
 
 `lazymark search <text>` looks for the text in every note and prints `note:line: text` for each match, ordered by note and line. It is case-insensitive (accents count: `cafe` does not find `café`); `--case` makes it case-sensitive and `--regex` reads the text as a regular expression ([RE2 syntax](https://github.com/google/re2/wiki/Syntax)). `--limit <n>` caps the matches (500 by default; `truncated` tells you there were more). Several words without quotes are one search. No match is not an error: it prints nothing and exits with 0; an empty search, an invalid expression or a negative limit exit with 2 and touch nothing.

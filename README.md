@@ -14,11 +14,33 @@ Plain markdown files. Keyboard and mouse. Inline images.
 
 <img src="assets/readme/main.gif" alt="lazymark browsing a folder of notes, ticking a task, opening the key list, the Kanban board and the settings" width="100%">
 
-[Obsidian compatibility](#obsidian-compatibility) · [Install](#install) · [Quick start](#quick-start) · [Keys](#keys) · [Configuration](#configuration)
+[This fork](#this-fork) · [Obsidian compatibility](#obsidian-compatibility) · [Install](#install) · [Quick start](#quick-start) · [Keys](#keys) · [Configuration](#configuration)
 
 </div>
 
-> **This is a personal fork.** It adds syncing between machines through git and a clean uninstall, and it sends nothing anywhere on its own. See [docs/fork.md](docs/fork.md).
+## This fork
+
+This is a personal fork of [lazymark](https://github.com/MathiasDrizzy/lazymark). It adds two things and leaves the rest as upstream ships it, so the sections below still describe it accurately.
+
+| Added here | What it does |
+|---|---|
+| [Sync between machines](docs/fork.md) | `lazymark sync` keeps the notes folder in step through a git remote of your own. It syncs when lazymark opens and when it closes. If both machines changed the same lines, it stops and names the notes; nothing is overwritten. |
+| [Clean uninstall](docs/fork.md) | `lazymark uninstall` removes the program, its settings and the editor plugins. Your notes are never touched. |
+
+```
+$ lazymark sync setup --remote git@gitea.example.com:you/notes.git
+$ lazymark sync now
+$ lazymark sync status
+$ lazymark uninstall
+```
+
+**Privacy.** lazymark makes no network connections of its own: no telemetry and no update check. The built program contains no networking code, which was checked for this fork. Sync runs your system's `git` against the remote you set up, and the MCP server only gives notes to an agent you connect yourself. See [docs/fork.md](docs/fork.md).
+
+**Installing.** The Go, Homebrew and prebuilt downloads under [Install](#install) are upstream's and do not have these additions. Build this fork [from source](#install).
+
+**Not yet tested** on macOS or against a real SSH remote: sync was tested on Linux with git repositories on the local disk.
+
+[docs/fork.md](docs/fork.md) has the details, including what is still to do.
 
 ## Why lazymark
 
@@ -175,6 +197,18 @@ What is **not** compatible, so you are not surprised:
 
 Install a [Nerd Font](https://www.nerdfonts.com/) in your terminal for the folder and note icons. Building needs Go 1.27.2 or newer.
 
+**This fork, from source**
+
+```sh
+git clone https://github.com/Rhei-xx/extralazymark.git
+cd extralazymark
+go build -o lazymark ./cmd/lazymark
+```
+
+Copy the `lazymark` file it builds to a folder on your `PATH`. Sync also needs `git`.
+
+The methods below install upstream lazymark, without [sync and uninstall](#this-fork).
+
 **With Go**
 
 ```sh
@@ -196,6 +230,14 @@ brew install mathiasdrizzy/tap/lazymark
 ```
 
 **Prebuilt binaries** for macOS, Linux and Windows are on the [Releases page](https://github.com/MathiasDrizzy/lazymark/releases).
+
+## Uninstall
+
+```sh
+lazymark uninstall
+```
+
+It lists what lazymark has put on the machine, asks, then removes the program, the settings folder and the editor plugins. Your notes stay. Add `--trash` to empty the trash in the notes folder as well. This command is part of [this fork](#this-fork); [docs/fork.md](docs/fork.md) says what it removes and what it leaves.
 
 ## Quick start
 
